@@ -3,3 +3,7 @@ node_modules/
 Thumbs.db
 *.b64
 .tmp_*
+.gradle/
+build/
+shots/
+*.log

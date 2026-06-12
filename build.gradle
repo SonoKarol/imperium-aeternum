@@ -1,0 +1,34 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def jmeVersion = '3.7.0-stable'
+
+dependencies {
+    implementation "org.jmonkeyengine:jme3-core:$jmeVersion"
+    implementation "org.jmonkeyengine:jme3-desktop:$jmeVersion"
+    implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVersion"
+    implementation "org.jmonkeyengine:jme3-effects:$jmeVersion"
+    implementation "org.jmonkeyengine:jme3-terrain:$jmeVersion"
+}
+
+application {
+    mainClass = 'aeternum.Main'
+    applicationDefaultJvmArgs = ['-Xmx2g']
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+    options.encoding = 'UTF-8'
+}
+
+// Pass -Pshot=true to render verification screenshots and exit.
+tasks.named('run') {
+    if (project.hasProperty('shot')) {
+        args '--shot'
+    }
+}
