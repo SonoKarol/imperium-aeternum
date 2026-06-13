@@ -13,7 +13,10 @@ bloom, god rays and reflective water. Build & run locally with `gradlew run`.)*
 
 ![La Via Sacra verso il Colosseo](screenshots/via-sacra.png)
 
-![L'arena del Custode](screenshots/arena-boss.png)
+I personaggi sono **modelli 3D scolpiti** (non più primitivi): il legionario ha lorica
+muscolata, elmo *galea*, scutum curvo e gladio, generato proceduralmente in Blender.
+
+![Il legionario in-game](screenshots/legionario.png)
 
 ## 🚀 Come si avvia
 
@@ -82,10 +85,27 @@ Colosseo: **CENTVRIO INVICTVS, CVSTOS AETERNVS**.
 - **SSAO**, **bloom** HDR, **FXAA** e **tone mapping** filmico
 - **Acqua riflettente** (WaterFilter) nel lago accanto al tempio in rovina
 - Terreno **procedurale analitico** (colline, depressione del lago, zone di gioco spianate)
-- Personaggi procedurali articolati con pose animate al frame (niente modelli esterni)
+- **Personaggi 3D scolpiti in Blender** (script Python procedurale → glTF): lorica
+  muscolata, elmo *galea* con paraguance e cresta, scutum curvo, gladio, *caligae*.
+  Le parti sono agganciate a nodi-pivot e animate con pose al frame
 - Audio **interamente sintetizzato** in `javax.sound.sampled` — niente file audio
 
+![Modello del legionario — fronte e retro (render Blender)](screenshots/modello-fronte.png)
+
 `gradlew run -Pshot=true` esegue una modalità verifica che salva screenshot in `shots/` ed esce.
+
+### Rigenerare i modelli dei personaggi
+
+Serve [Blender](https://www.blender.org) (testato con 5.1). Lo script è headless e
+deterministico:
+
+```bash
+blender -b --factory-startup -P blender/build_legionary.py -P blender/preview.py
+```
+
+Costruisce il legionario, lo esporta in `src/main/resources/Models/legionary.glb`
+e salva i render di anteprima in `blender/`. Il contratto parti/pivot/materiali è in
+[docs/CHARACTER-SPEC.md](docs/CHARACTER-SPEC.md).
 
 ## 🧱 Architettura
 
@@ -95,7 +115,9 @@ src/main/java/aeternum/
   Main.java               Bootstrap, pipeline di resa (probe, ombre, SSAO, bloom, rays, acqua)
   GameState.java          Flusso di gioco: titolo, Sacrarium, morte/Gloria, trigger boss
   World.java              Mondo procedurale + collisioni a cerchi
-  Rig.java / Poses.java   Personaggi procedurali + pose/animazioni stateless
+  Rig.java / Poses.java   Carica il modello glTF, lo aggancia ai pivot, pose/animazioni
+blender/                  Script Python che scolpiscono il legionario ed esportano il glTF
+src/main/resources/Models/  legionary.glb (modello scolpito)
   PlayerCtrl.java         Controller terza persona, stamina, combo, lock-on, camera
   Enemy*.java / Boss.java IA nemici e boss a due fasi
   Hud.java                HUD (barre, messaggi in latino, boss bar, level-up)

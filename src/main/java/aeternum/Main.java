@@ -207,7 +207,9 @@ public class Main extends SimpleApplication {
                     ctx.player.position.set(0.5f, 0f, -14f);
                     ctx.player.yaw = FastMath.PI;     // facing north, towards the arena
                     ctx.player.camYaw = 0f;           // camera south of the player, looking north
-                    ctx.player.camPitch = 0.2f;
+                    ctx.player.camPitch = 0.12f;
+                    // warm up the smoothed camera so the first shot isn't mid-lerp
+                    for (int i = 0; i < 60; i++) ctx.player.updateCamera(0.05f);
                     ctx.hud.message(" ", ColorRGBA.White, 0.01f, "");
                     shotStage = 1;
                     shotT = 0f;

@@ -14,6 +14,7 @@ dependencies {
     implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVersion"
     implementation "org.jmonkeyengine:jme3-effects:$jmeVersion"
     implementation "org.jmonkeyengine:jme3-terrain:$jmeVersion"
+    implementation "org.jmonkeyengine:jme3-plugins:$jmeVersion" // GLTF loader
 }
 
 application {
